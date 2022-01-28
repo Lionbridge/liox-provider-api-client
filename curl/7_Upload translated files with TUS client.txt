@@ -1,0 +1,63 @@
+Ref: https://developers.lionbridge.com/content/v2/docs/file_transfer.html
+
+Using a TUS client to upload the file to fmsUploadUrl.
+
+Note: The upload endpoint expects a â€˜Content-Lengthâ€™ header. Some TUS clients may not include this (notably Java client). Please see Java code sample below.
+
+Upload Code Sample
+C#
+
+			var info = new FileInfo("somefile.json");
+			var tusClient = new TusClient();
+			tusClient.AdditionalHeaders.Add("sastoken", fmsSASToken);
+			var tusMetadata = new (string key, string value)[]
+			{
+				("name", info.Name),
+				("contentType",MediaTypeNames.Application.Json),
+				("chunkSize", $"{1024 * 1024 * 1}")
+			};
+			var fileUrl = await tusClient.CreateAsync(fmsUploadUrl, info, tusMetadata);
+			var uploadOperation = await tusClient.UploadAsync(fileUrl, info, chunkSize: 1D);
+
+Java
+
+			Map headers = new HashMap();
+			headers.put("sastoken", fmsTransferObject.getFmsSASToken());
+			headers.put("Content-Length", "0");
+
+			final TusUpload upload = new TusUpload(file);
+			TusClient client = new TusClient();
+			client.setUploadCreationURL(new URL(fmsRedirectUrl));
+			client.setHeaders(headers);
+			client.enableResuming(new TusURLMemoryStore());
+
+			Integer chunkSize = 1024 * 1024 * 1;
+
+			Map metadata = new HashMap();
+			metadata.put("name", file.getName());
+			metadata.put("chunkSize", String.format("%d", chunkSize));
+			metadata.put("contentType", contentType);
+			upload.setMetadata(metadata);
+
+			log.info("Starting upload...");
+			TusExecutor executor = new TusExecutor() {
+				@Override
+				protected void makeAttempt() throws IOException, ProtocolException {
+				TusUploader uploader = client.resumeOrCreateUpload(upload);
+					uploader.setChunkSize(chunkSize);
+					uploader.setRequestPayloadSize((int)file.length());
+
+					do {
+					long totalBytes = upload.getSize();
+					long bytesUploaded = uploader.getOffset();
+					if (totalBytes == bytesUploaded) {
+					break;
+					}
+					} while (uploader.uploadChunk() > -1);
+
+					uploader.finish();
+					log.info("Upload finished.");
+					}
+				};
+			executor.makeAttempts();
+		

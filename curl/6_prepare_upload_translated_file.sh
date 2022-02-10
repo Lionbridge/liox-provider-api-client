@@ -4,7 +4,7 @@
 
 
 curl -X 'POST' \
-  'https://content-provider-api-dev.afe6c99ff5464f31beef.eastus.aksapp.io/v2/providers/[PROVIDER_ID]/jobs/[JOB_ID]/assetTasks/[ASSETTASK_ID]/translatedFile' \
+  'https://content-provider-api.staging.lionbridge.com/v2/providers/[PROVIDER_ID]/jobs/[JOB_ID]/assetTasks/[ASSETTASK_ID]/translatedFile' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer [ACCESS_TOKEN]' \
   -d ''

@@ -7,4 +7,4 @@ curl --location --request POST "https://login.lionbridge.com/connect/token" --he
 
 
 #Response
-{"access_token":"%%%USER_TOKEN_STRING%%%","expires_in":3600,"token_type":"Bearer","scope":"contentapi.contentv2.staging.default"}
+{"access_token":"%%%USER_TOKEN_STRING%%%","expires_in":3600,"token_type":"Bearer","scope":"contentapi.providerv2.staging.default"}

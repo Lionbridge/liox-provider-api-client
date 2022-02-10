@@ -3,7 +3,7 @@
 # Indicate AssetTasks IN_TRANSLATION
 
 curl -X 'PATCH' \
-  'https://content-api.staging.lionbridge.com/v2/providers/[PROVIDER_ID]/jobs/[JOB_ID]/assetTasks' \
+  'https://content-provider-api.staging.lionbridge.com/v2/providers/[PROVIDER_ID]/jobs/[JOB_ID]/assetTasks' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer [ACCESS_TOKEN]' \
   -H 'Content-Type: application/json' \

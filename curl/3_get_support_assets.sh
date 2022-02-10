@@ -3,7 +3,7 @@
 #Get SupportAssets
 
 curl -X 'GET' \
-  'https://content-api.staging.lionbridge.com/v2/providers/[PROVIDER_ID]/jobs/[JOB_ID]/supportAssets' \
+  'https://content-provider-api.staging.lionbridge.com/v2/providers/[PROVIDER_ID]/jobs/[JOB_ID]/supportAssets' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer [ACCESS_TOKEN]'
 
